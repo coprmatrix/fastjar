@@ -4,8 +4,10 @@ URL:          https://savannah.nongnu.org/projects/fastjar
 Group:        Archiver
 License:      GPL
 Version:      0.98
-Release:      5.1
+Release:      5.1%{?autorelease}
 Source0:      https://download.savannah.gnu.org/releases/fastjar/fastjar-%{version}.tar.gz
+Patch0:       fastjar-CVE-2010-2322.patch
+Patch1:       fix-update-mode.diff
 
 %{?!install_info_prereq:%define install_info_prereq info}
 %{?!install_info:%define install_info %{_sbindir}/install-info}
@@ -13,6 +15,16 @@ Source0:      https://download.savannah.gnu.org/releases/fastjar/fastjar-%{versi
 
 Requires(post): %{install_info_prereq}
 Requires(preun): %{install_info_prereq}
+
+BuildRequires:  zlib-devel
+BuildRequires:  autoconf
+BuildRequires:  make
+BuildRequires:  gcc
+BuildRequires:  libtool
+BuildRequires:  automake
+BuildRequires:  gettext
+BuildRequires:  intltool
+BuildRequires:  gtk-doc
 
 %description
 FastJar is an attempt at creating a feature-for-feature copy of
