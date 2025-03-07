@@ -4,17 +4,15 @@ URL:          https://savannah.nongnu.org/projects/fastjar
 Group:        Archiver
 License:      GPL
 Version:      0.98
-Release:      5.1%{?autorelease}
+Release:      7%{?autorelease}
 Source0:      https://download.savannah.gnu.org/releases/fastjar/fastjar-%{version}.tar.gz
 Patch0:       fastjar-CVE-2010-2322.patch
 Patch1:       fix-update-mode.diff
 
-%{?!install_info_prereq:%define install_info_prereq info}
-%{?!install_info:%define install_info %{_sbindir}/install-info}
-%{?!install_info_delete:%define install_info_delete %{install_info} --quiet –delete}
+%{?!ext_info:%define ext_info .gz}
 
-Requires(post): %{install_info_prereq}
-Requires(preun): %{install_info_prereq}
+Requires(post):  info
+Requires(preun): info
 
 BuildRequires:  zlib-devel
 BuildRequires:  autoconf
@@ -22,9 +20,6 @@ BuildRequires:  make
 BuildRequires:  gcc
 BuildRequires:  libtool
 BuildRequires:  automake
-BuildRequires:  gettext
-BuildRequires:  intltool
-BuildRequires:  gtk-doc
 
 %description
 FastJar is an attempt at creating a feature-for-feature copy of
@@ -51,16 +46,15 @@ rm -rf $RPM_BUILD_ROOT
 #rm -f $RPM_BUILD_ROOT%{_prefix}/lib/charset.alias
 rm -f $RPM_BUILD_ROOT%{_infodir}/dir
 
-
 %post
-%install_info --info-dir=%{_infodir} %{_infodir}/%{name}.info%{ext_info}
+install-info --info-dir=%{_infodir} %{_infodir}/%{name}.info%{ext_info}
 
 %preun
-%install_info_delete --info-dir=%{_infodir} %{_infodir}/%{name}.info%{ext_info}
+install-info --info-dir=%{_infodir} --delete %{_infodir}/%{name}.info%{ext_info}
 
 %files
 %doc AUTHORS README NEWS ChangeLog
 %{_bindir}/*
-%{_infodir}/fastjar.info.*
-%{_mandir}/man1/*.1.*
+%{_infodir}/fastjar.info%{ext_info}
+%{_mandir}/man1/*.1%{ext_info}
 
